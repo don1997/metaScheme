@@ -8,6 +8,7 @@
 (define (eval exp)
   (cond
   ((self-eval? exp) exp)
+  ((variable? exp) lookup-variable-value exp env)
   ((quoted? exp) text-of-quotation exp)
   (else
    error "UKNOWN")))
@@ -29,6 +30,9 @@
   (tagged-list? exp `quote))
 (define (text-of-quotation exp)
   (cadr exp))
+
+(define (variable? exp)
+  (symbol? exp))
 
 ;; I/O stuff....
 
