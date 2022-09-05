@@ -8,8 +8,10 @@
 (define (eval exp)
   (cond
   ((self-eval? exp) exp)
+  ((quoted? exp) text-of-quotation exp)
   (else
    error "UKNOWN")))
+
 
 ;; Selector self-eval?
 (define (self-eval? exp)
@@ -17,6 +19,16 @@
     ((number? exp) #t)
     ((string? exp) #t)
     (else #f)))
+
+(define (tagged-list? exp tag)
+  (if (pair? exp)
+    (eq? (car exp) tag)
+    false))
+
+(define (quoted? exp)
+  (tagged-list? exp `quote))
+(define (text-of-quotation exp)
+  (cadr exp))
 
 ;; I/O stuff....
 
