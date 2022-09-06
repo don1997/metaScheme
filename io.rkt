@@ -4,15 +4,50 @@
 
 #lang racket
 
+;;EVAL
 ;; mini eval
 (define (eval exp)
   (cond
   ((self-eval? exp) exp)
   ((variable? exp) lookup-variable-value exp env)
   ((quoted? exp) text-of-quotation exp)
+  ((assignment? exp)
+   (eval-assignment exp env))
+  ((definition? exp)
+   (eval-definition exp env))
+  ((if? exp)
+   (eval-if exp env))
+  ((lambda? exp)
+   (make-procedure
+    (lambda-parameters exp)
+    (lambda-body exp)
+    env))
+  ((begin? exp)
+   (eval-sequence
+    (begin-actions exp)
+    env))
+  ;;cond?
+  ((application? exp)
+   (apply(eval (operator exp) env)
+         (list-of-values
+          (operands exp)
+          env)))
   (else
-   error "UKNOWN")))
+   error "Uknown expression type: EVAL" exp)))
 
+;;APPLY
+(define (apply-self procedure arguments)
+  (cond ((primitive-procedure? procedure)
+         (apply-primitive-procedure
+          procedure
+          arugments))
+  (else
+   (error "Uknown procedure type: APPLY"
+          procedure))))
+
+
+;; Constructor
+(define (make-procedure) )
 
 ;; Selector self-eval?
 (define (self-eval? exp)
@@ -33,6 +68,34 @@
 
 (define (variable? exp)
   (symbol? exp))
+
+(define (assignment? ) )
+
+(define (definition? ) )
+
+(define (if? ) )
+
+(define (lambda? ) )
+
+(define (begin? ) )
+
+(define (primitive-procedure? ) )
+
+;; cond?
+
+(define (application? ) )
+
+;; eval-helpers
+(define (eval-assignment) )
+
+(define (eval-definition ) )
+
+(define (eval-if) )
+
+(define (eval-sequence) )
+
+;;apply-helpers
+(define (apply-primitive-procedure ) )
 
 ;; I/O stuff....
 
