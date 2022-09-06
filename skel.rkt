@@ -1,7 +1,6 @@
 ;; What is this??
-;; It is a bare minimum way to get input and output in the repl and essentially can only eval strings and numbers.
-;; Basically a pretty printer but I wanted to see how to get I/O working in a bare minimum system.
-
+;; This is the skeleton for the interpreter that i have so far.
+;; Does not run at the moment
 #lang racket
 
 ;;EVAL
